@@ -6,7 +6,12 @@ helpers do
         
     end
 
+    def logged_in?
+        !!current_user
+    end
 end
+
+
 get '/' do
 
     @finstagram_posts = FinstagramPost.order(created_at: :desc)
@@ -72,6 +77,11 @@ get '/logout' do
     session[:user_id] = nil
     redirect to('/')
 
+end
+
+before '/finstagram_posts/new' do
+    
+    redirect to ('/login') unless logged_in?
 end
 
 get '/finstagram_posts/new' do
